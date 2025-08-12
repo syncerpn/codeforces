@@ -1,25 +1,23 @@
+# first time learned that python's built-in dict can easily be hacked
+# making the runtime O(n2)
+import collections
+import random
+RD = random.getrandbits(31)
+
 t = int(input())
 for _ in range(t):
     n, k = list(map(int, input().strip().split(" ")))
     s = list(map(int, input().strip().split(" ")))
     t = list(map(int, input().strip().split(" ")))
-    d = {}
+    d = collections.defaultdict(int)
     for a in t:
-        p = a % k
-        if p > k - p:
-            p = k - p
-        if p not in d:
-            d[p] = 0
+        p = min((k - a) % k, a % k) ^ RD
         d[p] += 1
     
     for a in s:
-        p = a % k
-        q = k - p
-        if p in d and d[p] > 0:
-            d[p] -= 1
-        elif q in d and d[q] > 0:
-            d[q] -= 1
-        else:
+        p = min((k - a) % k, a % k) ^ RD
+        d[p] -= 1
+        if d[p] < 0:
             print("NO")
             break
     else:
