@@ -1,23 +1,28 @@
+# second time i got hacked again because of using dict
+# we again need the trick
+import collections
+import random
+RD = random.getrandbits(31)
+
 t = int(input())
 for _ in range(t):
     n = int(input())
     B = list(map(int, input().strip().split(" ")))
-    S = {}
-    dp = [0] * (n + 1)
+    S = collections.defaultdict(list)
     for i, b in enumerate(B):
-        dp[b] += 1
-        if b not in S:
-            S[b] = []
-        S[b].append(i)
+        p = b ^ RD
+        S[p].append(i)
     
     A = [""] * n
     j = 1
-    for b in S:
-        if dp[b] % b != 0:
+    for p in S:
+        b = p ^ RD
+        mb = len(S[p])
+        if mb % b != 0:
             print(-1)
             break
-        m = dp[b] // b
-        for ii, i in enumerate(S[b]):
+        m = mb // b
+        for ii, i in enumerate(S[p]):
             A[i] = str(j + ii % m)
         j += m
     else:
