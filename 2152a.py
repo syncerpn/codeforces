@@ -1,0 +1,6 @@
+t = int(input())
+for _ in range(t):
+    n = int(input())
+    A = list(map(int, input().strip().split(" ")))
+    k = len(set(A))
+    print(k + k-1)
